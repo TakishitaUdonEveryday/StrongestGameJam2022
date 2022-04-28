@@ -58,3 +58,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+SGJ2022_BaseProject/.vsconfig
+SGJ2022_BaseProject/Library
+SGJ2022_BaseProject/obj
+SGJ2022_BaseProject/UserSettings
