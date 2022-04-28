@@ -11,6 +11,10 @@ namespace SGJ
 
         private void Awake()
         {
+            // 複数シーンが読み込まれている場合は読み込みません
+            if (SceneManager.sceneCount > 1)
+                return;
+
             var data = GameDataManager.Instance.GameData;
             if (data.MaxStage > m_list.Length)
             {
