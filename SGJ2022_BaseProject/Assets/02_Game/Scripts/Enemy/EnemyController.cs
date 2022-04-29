@@ -83,7 +83,9 @@ namespace SGJ
             Debug.Log("pos = " + transform.position);
             Vector3 eyeWorldPos = transform.TransformPoint(eyeLocalPos);
             GameObject foundObj = null;
-            for (int i=0; i < VIEW_DIV_NUM; ++i)
+			int layerMask = ~(1 << CommonDefines.LAYER_ZOMBIE);
+
+			for (int i=0; i < VIEW_DIV_NUM; ++i)
 			{
                 RaycastHit hit = new RaycastHit();
                 float angle = Mathf.Lerp(m_viewAngleRange * (-0.5f),
@@ -93,7 +95,7 @@ namespace SGJ
                     {
                         origin = eyeWorldPos,
                         direction = transform.TransformDirection(viewLocalDir)
-                    }, out hit, m_viewLength))
+                    }, out hit, m_viewLength, layerMask))
 				{
                     if (hit.collider.gameObject.layer == CommonDefines.LAYER_PLAYER)
 					{
