@@ -18,12 +18,17 @@ namespace SGJ
         [SerializeField]
         private Animator m_animator = null;
 
+
+		[SerializeField] private Transform m_cameraMachineTr = null;	// カメラ機のTransform 
+
         private Rigidbody m_rigidbody = null;
         private Camera m_camera = null;
 
         private bool m_isEnd = false;
 
 		private bool m_isTakingPictures = false;
+
+		[SerializeField] private float m_cameraMoveAngleSpd = 90.0f;
 
 
         private void Start()
@@ -47,6 +52,8 @@ namespace SGJ
 								// 写真撮影開始 
 								CameraTexture.Instance.ActionEnter();
 								m_isTakingPictures = true;
+								// カメラ機の操作開始 
+								StartCoroutine(CoControlCameraMachine());
 							}
 							break;
 						case CameraTexture.Status.Hold:
@@ -63,6 +70,7 @@ namespace SGJ
 							break;
 						case CameraTexture.Status.Leave:
 							m_isTakingPictures = false;
+							StopAllCoroutines();
 							break;
 					}
 				}
@@ -74,6 +82,51 @@ namespace SGJ
 					// 撮影辞める 
 					CameraTexture.Instance.ActionLeave();
 				}
+			}
+		}
+
+
+		/// <summary>
+		/// カメラ機の操作 
+		/// </summary>
+		/// <returns></returns>
+		private IEnumerator CoControlCameraMachine()
+		{
+			m_cameraMachineTr.localRotation = Quaternion.identity;
+			Vector3 rotAngle = Vector3.zero;
+
+			Vector3 mousePos = Vector3.zero;
+			bool isDown = false;
+			if (Input.GetMouseButton(0))
+			{
+				isDown = true;
+				mousePos = Input.mousePosition;
+			}
+
+			while (CameraTexture.Instance.GetStatus() != CameraTexture.Status.Outside)
+			{
+				if (Input.GetMouseButtonDown(0))
+				{
+					isDown = true;
+					mousePos = Input.mousePosition;
+				} else if (!Input.GetMouseButton(0))
+				{
+					isDown = false;
+				}
+
+				if (isDown)
+				{
+					//rotAngle.y = Mathf.Clamp(rotAngle.y - m_joystick.Horizontal * (m_cameraMoveAngleSpd * Time.deltaTime), -25.0f, 25.0f);
+					//rotAngle.x = Mathf.Clamp(rotAngle.x + m_joystick.Vertical * (m_cameraMoveAngleSpd * Time.deltaTime), -120.0f, 120.0f);
+
+					rotAngle.y = Mathf.Clamp(rotAngle.y - (Input.mousePosition.x - mousePos.x) / (float)Screen.width * m_cameraMoveAngleSpd, -120.0f, 120.0f);
+					rotAngle.x = Mathf.Clamp(rotAngle.x + (Input.mousePosition.y - mousePos.y) / (float)Screen.height * m_cameraMoveAngleSpd, -25.0f, 25.0f);
+					mousePos = Input.mousePosition;
+
+					m_cameraMachineTr.localRotation = Quaternion.Euler(rotAngle);
+				}
+
+				yield return null;
 			}
 		}
 
