@@ -49,7 +49,19 @@ namespace SGJ
 
             // キングをつくる
             var king = Instantiate(m_kingEnemy, transform);
-            var kpos = new Vector3(Random.Range(-m_rad / 2, m_rad / 2), king.transform.position.y, Random.Range(-m_rad / 2, m_rad / 2));
+            var x = 0.0f;
+            var z = 0.0f;
+            if (Random.Range(0,2) == 0)
+            {
+                x = Random.Range(m_rad / 2, m_rad);
+                z = Random.Range(m_rad / 2, m_rad);
+            }
+            else
+            {
+                x = Random.Range(-m_rad, -m_rad / 2);
+                z = Random.Range(-m_rad, -m_rad / 2);
+            }
+            var kpos = new Vector3(x, king.transform.position.y, z);
             king.transform.position = kpos;
         }
 

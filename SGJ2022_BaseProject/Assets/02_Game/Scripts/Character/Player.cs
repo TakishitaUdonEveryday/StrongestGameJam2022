@@ -13,7 +13,16 @@ namespace SGJ
         private GameObject m_attackPrefab = null;
 
         [SerializeField]
+        private GameObject m_bulletPrefab = null;
+
+        [SerializeField]
         private Transform m_attackPos = null;
+
+        [SerializeField]
+        private Transform m_muzzle = null;
+
+        [Label("銃"), SerializeField]
+        private bool m_isGun = false;
 
         private void Start()
         {
@@ -24,7 +33,14 @@ namespace SGJ
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                m_animator.SetTrigger("Attack");
+                if (m_isGun)
+                {
+                    m_animator.SetTrigger("Shot");
+                }
+                else
+                {
+                    m_animator.SetTrigger("Attack");
+                }
             }
         }
 
@@ -33,6 +49,13 @@ namespace SGJ
             var obj = Instantiate(m_attackPrefab, m_attackPos);
         }
 
+
+        public void Shot()
+        {
+            var obj = Instantiate(m_bulletPrefab);
+            obj.transform.position = m_muzzle.position;
+            obj.transform.forward = transform.forward;
+        }
 
     }
 }

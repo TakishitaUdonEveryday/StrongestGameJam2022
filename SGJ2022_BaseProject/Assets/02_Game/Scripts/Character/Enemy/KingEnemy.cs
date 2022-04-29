@@ -22,37 +22,44 @@ namespace SGJ
 
         override protected void Start()
         {
-            m_npcManager = NpcManager.Instance;
+            base.Start();
             // 一番近い一般人を感染させる
             Infected();
-            m_navMesh = GetComponent<NavMeshAgent>();
         }
 
         override protected void Update()
         {
-            if (!GameManager.Instance.IsPlay)
+            if (!GameManager.Instance.IsPlay || m_isDeath)
                 return;
-            if (NpcManager.Instance.GetPLDistance(transform) < m_attackLength)
+            if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("Damage"))
             {
-                // 攻撃する
-                m_animator.SetTrigger("Attack");
-            }
-            else
-            {
-                // プレイヤーを追いかける
-                m_navMesh.SetDestination(m_npcManager.Player.position);
-            }
-            m_animator.SetFloat("Speed", m_navMesh.velocity.magnitude / m_navMesh.speed);
+                m_navMesh.isStopped = false;
+                if (NpcManager.Instance.GetPLDistance(transform) < m_attackLength)
+                {
+                    // 攻撃する
+                    m_animator.SetTrigger("Attack");
+                }
+                else
+                {
+                    // プレイヤーを追いかける
+                    m_navMesh.SetDestination(m_npcManager.Player.position);
+                }
+                m_animator.SetFloat("Speed", m_navMesh.velocity.magnitude / m_navMesh.speed);
 
-            if (m_time / m_coolTime < 1f)
-            {
-                m_time += Time.deltaTime;
+                if (m_time / m_coolTime < 1f)
+                {
+                    m_time += Time.deltaTime;
+                }
+                else
+                {
+                    // 一番近い一般人を感染させる
+                    Infected();
+                    m_time = 0f;
+                }
             }
             else
             {
-                // 一番近い一般人を感染させる
-                Infected();
-                m_time = 0f;
+                m_navMesh.isStopped = true;
             }
         }
 

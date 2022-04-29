@@ -119,7 +119,7 @@ public class AttackCollisionBase : MonoBehaviour
         if (hitObj)
         {
             // 当たったときの実装呼び出し(実装は各自で行う)
-            hitObj.HitAttackCollision();
+            hitObj.HitAttackCollision(gameObject);
 
             // 多段ヒットさせないためにオブジェクト削除
             Destroy(this.gameObject);

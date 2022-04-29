@@ -36,15 +36,29 @@ public class CharacterBase : MonoBehaviour
     /// <summary>
     /// 攻撃用コリジョンが当たった場合に呼び出される
     /// </summary>
-    public virtual void HitAttackCollision()
+    public virtual void HitAttackCollision(GameObject other)
     {
+        if (m_Hp <= 0)
+            return;
+
         GameDebug.Log(m_ObjectType + "に当たった！");
         --m_Hp;
         if(m_Hp <= 0)
         {
-            GameDebug.Log(gameObject.name + "が死んだ");
+            Death();
+        }
+        else
+        {
+            Damage(other.transform.position);
         }
     }
 
-    
+    virtual protected void Death()
+    {
+        GameDebug.Log(gameObject.name + "が死んだ");
+    }
+
+    virtual protected void Damage(Vector3 hitPos)
+    {
+    }
 }

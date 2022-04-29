@@ -21,32 +21,62 @@ namespace SGJ
         [SerializeField]
         protected Transform m_attackPos = null;
 
+        protected bool m_isDeath = false;
+
+        protected Rigidbody m_rigidbody = null;
+
         virtual protected void Start()
         {
             m_npcManager = NpcManager.Instance;
             m_navMesh = GetComponent<NavMeshAgent>();
+            m_rigidbody = GetComponent<Rigidbody>();
             m_navMesh.stoppingDistance = m_attackLength;
         }
 
         virtual protected void Update()
         {
-            if (!GameManager.Instance.IsPlay)
+            if (!GameManager.Instance.IsPlay || m_isDeath)
                 return;
-            // プレイヤーを追いかける
-            m_navMesh.SetDestination(m_npcManager.Player.position);
-
-            if (m_npcManager.GetPLDistance(transform) <= m_attackLength)
+            if (!m_animator.GetCurrentAnimatorStateInfo(0).IsName("Damage"))
             {
-                // 攻撃する
-                m_animator.SetTrigger("Attack");
+                m_navMesh.isStopped = false;
+                // プレイヤーを追いかける
+                m_navMesh.SetDestination(m_npcManager.Player.position);
+
+                if (m_npcManager.GetPLDistance(transform) <= m_attackLength)
+                {
+                    // 攻撃する
+                    m_animator.SetTrigger("Attack");
+                }
+                m_animator.SetFloat("Speed", m_navMesh.velocity.magnitude / m_navMesh.speed);
             }
-            m_animator.SetFloat("Speed", m_navMesh.velocity.magnitude / m_navMesh.speed);
+            else
+            {
+                m_navMesh.isStopped = true;
+            }
         }
 
         public void PopAttackCollision()
         {
             GameDebug.Log("アタック");
             var obj = Instantiate(m_attackPrefab, m_attackPos);
+        }
+
+        override protected void Death()
+        {
+            m_isDeath = true;
+            m_navMesh.isStopped = true;
+            m_animator.SetTrigger("Death");
+            Destroy(gameObject, 3f);
+            GetComponent<Collider>().enabled = false;
+        }
+
+        override protected void Damage(Vector3 hitPos)
+        {
+            m_animator.SetTrigger("Damage");
+            var vec = transform.position - hitPos;
+            vec.y = 0;
+            m_rigidbody.AddForce(vec.normalized * 10f, ForceMode.Force);
         }
     }
 }
