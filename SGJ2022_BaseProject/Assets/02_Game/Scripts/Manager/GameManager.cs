@@ -10,10 +10,13 @@ namespace SGJ
         private bool m_isGameClear = false;
         private bool m_isGameOver = false;
 
-        /// <summary>
-        /// ゲームプレイ中フラグ
-        /// </summary>
-        public bool IsPlay
+		[SerializeField] private ClearStaging m_textClear;
+		[SerializeField] private ClearStaging m_textOver;
+
+		/// <summary>
+		/// ゲームプレイ中フラグ
+		/// </summary>
+		public bool IsPlay
         {
             get
             {
@@ -47,7 +50,9 @@ namespace SGJ
                 return;
             GameDebug.Log("ゲームクリア");
             m_isGameClear = true;
-            ClearStaging.Instance.SetActive(true);
+
+			// ゲームクリア表示 
+			m_textClear.SetActive(true);
         }
 
         public void GameOver()
@@ -56,7 +61,12 @@ namespace SGJ
                 return;
             GameDebug.Log("ゲームオーバー");
             m_isGameOver = true;
-        }
+
+			// ゲームオーバー表示 
+			m_textOver.SetActive(true);
+
+		}
+
 
     }
 }

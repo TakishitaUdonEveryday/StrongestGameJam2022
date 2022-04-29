@@ -37,16 +37,18 @@ namespace SGJ
 			// プレイヤーを視認していたらプレイヤー方向に移動する 
             if (m_foundPlayer!=null)
 			{
-                // 体の向きをプレイヤー方向にする
-                Vector3 dir = m_foundPlayer.transform.position - transform.position;
-                dir.y = 0.0f;
-                Quaternion lookRot = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.25f);
+				if (GameManager.Instance.IsPlay)
+				{
+					// 体の向きをプレイヤー方向にする
+					Vector3 dir = m_foundPlayer.transform.position - transform.position;
+					dir.y = 0.0f;
+					Quaternion lookRot = Quaternion.LookRotation(dir);
+					transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.25f);
 
-                // 正面に移動する 
-                Vector3 move = transform.forward * (m_moveSpeed * Time.fixedDeltaTime);
-                m_rigidbody.MovePosition(transform.position + move);
-
+					// 正面に移動する 
+					Vector3 move = transform.forward * (m_moveSpeed * Time.fixedDeltaTime);
+					m_rigidbody.MovePosition(transform.position + move);
+				}
 			}
 		}
 
@@ -79,10 +81,10 @@ namespace SGJ
             const int VIEW_DIV_NUM = 8;
             const float EYE_HEIGHT = 1.0f;
 
-            Vector3 eyeLocalPos = Vector3.up * EYE_HEIGHT;
-            Debug.Log("pos = " + transform.position);
-            Vector3 eyeWorldPos = transform.TransformPoint(eyeLocalPos);
-            GameObject foundObj = null;
+			Vector3 eyeLocalPos = Vector3.up * EYE_HEIGHT;
+		//	Debug.Log("pos = " + transform.position);
+			Vector3 eyeWorldPos = transform.TransformPoint(eyeLocalPos);
+			GameObject foundObj = null;
 			int layerMask = ~(1 << CommonDefines.LAYER_ZOMBIE);
 
 			for (int i=0; i < VIEW_DIV_NUM; ++i)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SGJ
 {
-    public class ClearStaging : SingletonMonoBehaviour<ClearStaging>
+    public class ClearStaging : MonoBehaviour
     {
         [SerializeField]
         private CanvasGroup m_canvasGroup = null;

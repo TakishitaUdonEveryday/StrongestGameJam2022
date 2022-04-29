@@ -74,10 +74,32 @@ namespace SGJ
                         m_animator.SetBool("isClear", true);
                         m_isEnd = true;
                     }
-                }
+					// ゲームオーバー 
+					else if (GameManager.Instance.IsGameOver)
+					{
+						// アニメーションセット
+						m_animator.SetBool("isGameOver", true);
+						m_isEnd = true;
+					}
+				}
             }
         }
 
-    }
+
+
+
+		///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+		public void OnCollisionEnter(Collision collision)
+		{
+			if (collision.gameObject.layer == CommonDefines.LAYER_ZOMBIE)
+			{
+				GameManager.Instance.GameOver();
+			}
+		}
+
+	}
 
 }

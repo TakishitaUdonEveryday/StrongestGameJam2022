@@ -34,13 +34,13 @@ namespace SGJ
             switch (type)
             {
                 case SceneType.Title:
-                    SceneManager.LoadScene(m_sceneData.TitleScene);
+                    SceneManager.LoadSceneAsync(m_sceneData.TitleScene);
                     break;
                 case SceneType.Select:
-                    SceneManager.LoadScene(m_sceneData.SelectScene);
+                    SceneManager.LoadSceneAsync(m_sceneData.SelectScene);
                     break;
                 case SceneType.Main:
-                    SceneManager.LoadScene(m_sceneData.MainScene);
+                    SceneManager.LoadSceneAsync(m_sceneData.MainScene);
                     break;
             }
         }
