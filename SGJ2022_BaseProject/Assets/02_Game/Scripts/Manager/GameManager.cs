@@ -17,6 +17,8 @@ namespace SGJ
 		[SerializeField] private ClearStaging m_textOver;
 		[SerializeField] private TextMeshProUGUI m_filmsCountText = null;
 		[SerializeField] private PlayingAlbumUI m_playingAlbum = null;
+		[SerializeField] private ResultPhotoAlbumUI m_resultPhotoAlbum = null;
+		[SerializeField] private PlayerController m_playerCont = null;
 
 		/// <summary>
 		/// ゲームプレイ中フラグ
@@ -34,7 +36,14 @@ namespace SGJ
             }
         }
 
-        public bool IsGameClear { get => m_isGameClear; }
+
+		public void Start()
+		{
+			m_resultPhotoAlbum.gameObject.SetActive(false);
+		}
+
+
+		public bool IsGameClear { get => m_isGameClear; }
         public bool IsGameOver { get => m_isGameOver; }
 
         public void GameStart()
@@ -56,11 +65,36 @@ namespace SGJ
             GameDebug.Log("ゲームクリア");
             m_isGameClear = true;
 
-			// ゲームクリア表示 
-			m_textClear.SetActive(true);
-        }
+			// プレイ中アルバムを非表示 
+			m_playingAlbum.gameObject.SetActive(false);
 
-        public void GameOver()
+			// リザルト表示 
+			var photoList = m_playerCont.GetPhotoDataList();
+			m_resultPhotoAlbum.StartDisplay(photoList);
+
+			// 合計点 
+			int totalScore = 0;
+			foreach (var photo in photoList)
+			{
+				totalScore += photo.m_score;
+			}
+			m_textClear.SetTotalScore(totalScore);
+
+			// リザルト表示 
+			StartCoroutine(CoDelayResult((float)photoList.Count*0.2f + 0.25f));
+		}
+
+		private IEnumerator CoDelayResult(float delayTime)
+		{
+			yield return new WaitForSeconds(delayTime);
+
+			// ゲームクリア表示 
+			m_textClear.SetActive(true, 2.0f);
+		}
+
+
+
+		public void GameOver()
         {
             if (m_isGameClear || m_isGameOver)
                 return;
@@ -68,7 +102,7 @@ namespace SGJ
             m_isGameOver = true;
 
 			// ゲームオーバー表示 
-			m_textOver.SetActive(true);
+			m_textOver.SetActive(true, 2.0f);
 
 		}
 

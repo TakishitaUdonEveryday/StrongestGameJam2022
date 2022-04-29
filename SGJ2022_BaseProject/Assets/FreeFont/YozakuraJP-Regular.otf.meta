@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 5cf0fdd86eaacdf4497a8b4dca7f1873
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Yozakura JP
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 8552c16c2f843db40a5f6a5f1e99d9fa, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

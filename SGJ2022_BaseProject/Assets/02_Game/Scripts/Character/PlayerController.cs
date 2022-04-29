@@ -32,9 +32,17 @@ namespace SGJ
 		[SerializeField] private float m_cameraMoveAngleSpd = 90.0f;
 		[SerializeField] private RenderTexture m_photoRenderTexture;
 
-		private List<Texture> m_photoTextures = new List<Texture>();
+		private List<PhotoData> m_photoDataList = new List<PhotoData>();
 
 		private int m_countOfFilms = GameManager.DEFAULT_FILMS_NUM;     // フィルムの数 
+
+		public  class PhotoData
+		{
+			public Texture m_texture = null;
+			public int m_score = 0;
+			public int m_newCount = 0;
+		}
+
 
 
         private void Start()
@@ -45,6 +53,17 @@ namespace SGJ
 			// カメラの動作を無効化 
 			m_cameraMachineTr.gameObject.SetActive(false);
 		}
+
+
+		/// <summary>
+		/// 撮影した写真を取得 
+		/// </summary>
+		/// <returns></returns>
+		public List<PhotoData> GetPhotoDataList()
+		{
+			return m_photoDataList;
+		}
+
 
 
 		public void Update()
@@ -78,12 +97,19 @@ namespace SGJ
 									GameManager.Instance.SetFilmsCount(m_countOfFilms);
 
 									// 写真をコピー 
-									var newTexture = new Texture2D(m_photoRenderTexture.width, m_photoRenderTexture.height, TextureFormat.RGBA32, false);
-									Graphics.CopyTexture(m_photoRenderTexture, newTexture);
-									m_photoTextures.Add(newTexture);
+									PhotoData photoData = new PhotoData();
+									photoData.m_texture = new Texture2D(m_photoRenderTexture.width, m_photoRenderTexture.height, TextureFormat.RGBA32, false);
+									Graphics.CopyTexture(m_photoRenderTexture, photoData.m_texture);
+
+									// 評価点 
+									photoData.m_score = Random.Range(1, 100);
+									photoData.m_newCount = Mathf.Max(0,Random.Range(0, 3) - 1);
+
+									// リストアップ 
+									m_photoDataList.Add(photoData);
 
 									// プレイ中アルバムに新しい写真を設定 
-									GameManager.Instance.SetNewTextureToPlayingAlbum(newTexture);
+									GameManager.Instance.SetNewTextureToPlayingAlbum(photoData.m_texture);
 								}
 							}
 							else if (!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
