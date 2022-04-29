@@ -21,8 +21,6 @@ namespace SGJ
         [SerializeField]
         protected Transform m_attackPos = null;
 
-        protected bool m_isDeath = false;
-
         protected Rigidbody m_rigidbody = null;
 
         virtual protected void Start()

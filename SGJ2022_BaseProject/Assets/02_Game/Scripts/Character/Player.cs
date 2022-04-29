@@ -31,6 +31,8 @@ namespace SGJ
 
         private void Update()
         {
+            if (m_isDeath)
+                return;
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (m_isGun)
@@ -55,6 +57,20 @@ namespace SGJ
             var obj = Instantiate(m_bulletPrefab);
             obj.transform.position = m_muzzle.position;
             obj.transform.forward = transform.forward;
+        }
+
+        override protected void Death()
+        {
+            m_isDeath = true;
+            GameManager.Instance.GameOver();
+            m_animator.SetTrigger("Death");
+            GetComponent<Rigidbody>().isKinematic = true;
+            GetComponent<Collider>().enabled = false;
+        }
+
+        override protected void Damage(Vector3 hitPos)
+        {
+            m_animator.SetTrigger("Damage");
         }
 
     }

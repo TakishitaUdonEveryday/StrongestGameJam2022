@@ -26,6 +26,8 @@ public class CharacterBase : MonoBehaviour
         set { m_Hp = value; }
     }
 
+    protected bool m_isDeath = false;
+
     /// <summary>
     /// オブジェクトの種類(コリジョン生成用)
     /// </summary>
