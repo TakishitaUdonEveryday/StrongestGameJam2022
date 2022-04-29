@@ -9,6 +9,7 @@ namespace SGJ
         {
             if (other.CompareTag("Player"))
             {
+                other.gameObject.GetComponent<Player>().SetKusaiParticle();
                 Hit();
             }
         }

@@ -8,9 +8,12 @@ namespace SGJ
     {
         [SerializeField]
         private Animator m_animator = null;
-
         [SerializeField]
         private Transform m_playerTransform = null;
+        [SerializeField]
+        private GameObject m_pickupHeart = null;
+        [SerializeField]
+        private GameObject m_brokenHeart = null;
 
         private Rigidbody m_rigidbody = null;
 
@@ -37,14 +40,21 @@ namespace SGJ
                     // クリアした？
                     if (GameManager.Instance.IsGameClear)
                     {
-                        // アニメーションセット
+                        // パーティクルセット
+                        GameObject pickup = Instantiate(m_pickupHeart) as GameObject;
+                        pickup.transform.position += transform.position;
+                        pickup.transform.parent = transform;
 
                         m_isEnd = true;
                     }
                     // ゲームオーバー？
                     if (GameManager.Instance.IsGameOver)
                     {
-                        // アニメーションセット
+                        // パーティクルセット
+                        Vector3 pos = new Vector3(0, 1.3f, 0);
+                        GameObject broken = Instantiate(m_brokenHeart) as GameObject;
+                        broken.transform.position += transform.position;
+                        broken.transform.parent = transform;
 
                         m_isEnd = true;
                     }
