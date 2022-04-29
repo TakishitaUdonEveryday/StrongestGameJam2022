@@ -10,14 +10,19 @@ namespace SGJ
     {
         [SerializeField, Label("視野角度")] private float m_viewAngleRange = 45.0f;
         [SerializeField, Label("視野距離")] private float m_viewLength = 5.0f;
+        [SerializeField, Label("移動速度")] private float m_moveSpeed = 1.2f;
 
 
         private PlayerController m_foundPlayer = null;
+
+        private Rigidbody m_rigidbody = null;
 
 
         // Start is called before the first frame update
         void Start()
         {
+            m_rigidbody = GetComponent<Rigidbody>();
+
             StartCoroutine(CoObservePlayer());
         }
 
@@ -27,16 +32,32 @@ namespace SGJ
         }
 
 
+		private void FixedUpdate()
+		{
+			// プレイヤーを視認していたらプレイヤー方向に移動する 
+            if (m_foundPlayer!=null)
+			{
+                // 体の向きをプレイヤー方向にする
+                Vector3 dir = m_foundPlayer.transform.position - transform.position;
+                dir.y = 0.0f;
+                Quaternion lookRot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.25f);
+
+                // 正面に移動する 
+                Vector3 move = transform.forward * (m_moveSpeed * Time.fixedDeltaTime);
+                m_rigidbody.MovePosition(transform.position + move);
+
+			}
+		}
 
 
 
 
 
-
-        /// <summary>
-        /// 一定時間間隔ごとにプレイヤーを監視する
-        /// </summary>
-        /// <returns></returns>
+		/// <summary>
+		/// 一定時間間隔ごとにプレイヤーを監視する
+		/// </summary>
+		/// <returns></returns>
 		private IEnumerator CoObservePlayer()
 		{
             while (true)
@@ -86,11 +107,11 @@ namespace SGJ
             if (foundObj!=null)
 			{
                 m_foundPlayer = foundObj.GetComponentInParent<PlayerController>();
-                Debug.Log("FOUND");
+            //    Debug.Log("FOUND");
             } else
 			{
                 m_foundPlayer = null;
-                Debug.Log("NONE");
+            //    Debug.Log("NONE");
 			}
 
         }
