@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace SGJ
 {
@@ -29,13 +30,21 @@ namespace SGJ
 		private bool m_isTakingPictures = false;
 
 		[SerializeField] private float m_cameraMoveAngleSpd = 90.0f;
+		[SerializeField] private RenderTexture m_photoRenderTexture;
+
+		private List<Texture> m_photoTextures = new List<Texture>();
+
+		private int m_countOfFilms = GameManager.DEFAULT_FILMS_NUM;     // フィルムの数 
 
 
         private void Start()
         {
             m_rigidbody = GetComponent<Rigidbody>();
             m_camera = Camera.main;
-        }
+
+			// カメラの動作を無効化 
+			m_cameraMachineTr.gameObject.SetActive(false);
+		}
 
 
 		public void Update()
@@ -59,8 +68,23 @@ namespace SGJ
 						case CameraTexture.Status.Hold:
 							if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
 							{
-								// シャッター 
-								CameraTexture.Instance.ActionShutter();
+								if (0 < m_countOfFilms)
+								{
+									// シャッター 
+									CameraTexture.Instance.ActionShutter();
+
+									// フィルムの枚数を減らす 
+									m_countOfFilms--;
+									GameManager.Instance.SetFilmsCount(m_countOfFilms);
+
+									// 写真をコピー 
+									var newTexture = new Texture2D(m_photoRenderTexture.width, m_photoRenderTexture.height, TextureFormat.RGBA32, false);
+									Graphics.CopyTexture(m_photoRenderTexture, newTexture);
+									m_photoTextures.Add(newTexture);
+
+									// プレイ中アルバムに新しい写真を設定 
+									GameManager.Instance.SetNewTextureToPlayingAlbum(newTexture);
+								}
 							}
 							else if (!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
 							{
@@ -71,6 +95,8 @@ namespace SGJ
 						case CameraTexture.Status.Leave:
 							m_isTakingPictures = false;
 							StopAllCoroutines();
+							// カメラの動作を無効化 
+							m_cameraMachineTr.gameObject.SetActive(false);
 							break;
 					}
 				}
@@ -103,6 +129,9 @@ namespace SGJ
 				mousePos = Input.mousePosition;
 			}
 
+			// カメラの動作を有効化 
+			m_cameraMachineTr.gameObject.SetActive(true);
+
 			while (CameraTexture.Instance.GetStatus() != CameraTexture.Status.Outside)
 			{
 				if (Input.GetMouseButtonDown(0))
@@ -128,6 +157,10 @@ namespace SGJ
 
 				yield return null;
 			}
+
+			// カメラの動作を無効化 
+			m_cameraMachineTr.gameObject.SetActive(false);
+
 		}
 
 

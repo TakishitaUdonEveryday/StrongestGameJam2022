@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace SGJ
 {
@@ -10,8 +11,12 @@ namespace SGJ
         private bool m_isGameClear = false;
         private bool m_isGameOver = false;
 
+		public const int DEFAULT_FILMS_NUM = 10;
+
 		[SerializeField] private ClearStaging m_textClear;
 		[SerializeField] private ClearStaging m_textOver;
+		[SerializeField] private TextMeshProUGUI m_filmsCountText = null;
+		[SerializeField] private PlayingAlbumUI m_playingAlbum = null;
 
 		/// <summary>
 		/// ゲームプレイ中フラグ
@@ -68,6 +73,27 @@ namespace SGJ
 		}
 
 
-    }
+
+		/// <summary>
+		/// フィルムの数のUIテキストを更新 
+		/// </summary>
+		/// <param name="count"></param>
+		public void SetFilmsCount(int count)
+		{
+			m_filmsCountText.text = count.ToString();
+		}
+
+
+		/// <summary>
+		/// プレイ中アルバムに新しい写真を登録 
+		/// </summary>
+		/// <param name="newTexture"></param>
+		public void SetNewTextureToPlayingAlbum(Texture newTexture)
+		{
+			m_playingAlbum.SetNewPhotoTexture(newTexture);
+		}
+
+
+	}
 }
 

@@ -62,8 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98240b6adfd22874db79d8a77ca6940b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_viewAngleRange: 45
-  m_viewLength: 10
+  m_viewAngleRange: 120
+  m_viewLength: 20
   m_moveSpeed: 2.5
 --- !u!136 &3211719799333441131
 CapsuleCollider:

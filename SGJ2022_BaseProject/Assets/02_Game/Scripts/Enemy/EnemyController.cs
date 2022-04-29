@@ -78,7 +78,7 @@ namespace SGJ
         /// </summary>
         private void ObservePlayer()
 		{
-            const int VIEW_DIV_NUM = 8;
+            const int VIEW_DIV_NUM = 20;
             const float EYE_HEIGHT = 1.0f;
 
 			Vector3 eyeLocalPos = Vector3.up * EYE_HEIGHT;
