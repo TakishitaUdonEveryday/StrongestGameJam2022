@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace SGJ
 {
@@ -18,6 +19,8 @@ namespace SGJ
         [SerializeField]
         private float m_rad = 20f;
 
+        private List<GameObject> m_peoples = new List<GameObject>();
+
         private void Start()
         {
             Create();
@@ -31,6 +34,7 @@ namespace SGJ
                 var obj = Instantiate(m_peopleObj, transform);
                 var pos = new Vector3(Random.Range(-m_rad, m_rad), obj.transform.position.y, Random.Range(-m_rad, m_rad));
                 obj.transform.position = pos;
+                m_peoples.Add(obj);
                 ++count;
             }
 
@@ -38,6 +42,33 @@ namespace SGJ
             var king = Instantiate(m_kingEnemy, transform);
             var kpos = new Vector3(Random.Range(-m_rad / 2, m_rad / 2), king.transform.position.y, Random.Range(-m_rad / 2, m_rad / 2));
             king.transform.position = kpos;
+        }
+
+        /// <summary>
+        /// 指定距離内で一番近い
+        /// </summary>
+        /// <param name="trans"></param>
+        /// <returns></returns>
+        public GameObject GetNearPeople(Transform trans, float rad)
+        {
+            var min = 999f;
+            GameObject ans = null;
+            foreach (var p in m_peoples)
+            {
+                var dis = Mathf.Abs(Vector3.Distance(trans.position, p.transform.position));
+                if (dis < min && dis < rad)
+                {
+                    ans = p;
+                    min = dis;
+                }
+            }
+
+            return ans;
+        }
+
+        public void RemovePeople(GameObject obj)
+        {
+            m_peoples.Remove(obj);
         }
     }
 }
