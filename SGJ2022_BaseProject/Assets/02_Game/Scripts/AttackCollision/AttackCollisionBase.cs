@@ -99,18 +99,19 @@ public class AttackCollisionBase : MonoBehaviour
         Destroy(this.gameObject);
     }
 
+
     /// <summary>
     /// 当たり判定
     /// </summary>
     /// <param name="collision"></param>
-    private void OnTriggerEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (!m_isInit)
         {
             return;
         }
 
-        CharacterBase hitObj = collision.collider.gameObject.GetComponent<CharacterBase>();
+        CharacterBase hitObj = other.gameObject.GetComponent<CharacterBase>();
 
         // 当たったオブジェクトの種類が親の種類と違う場合にヒット処理を行う
         if (hitObj)
