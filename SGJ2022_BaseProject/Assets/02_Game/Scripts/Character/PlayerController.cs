@@ -23,13 +23,62 @@ namespace SGJ
 
         private bool m_isEnd = false;
 
+		private bool m_isTakingPictures = false;
+
+
         private void Start()
         {
             m_rigidbody = GetComponent<Rigidbody>();
             m_camera = Camera.main;
         }
 
-        private void FixedUpdate()
+
+		public void Update()
+		{
+			if (GameManager.Instance.IsPlay)
+			{
+				if (CameraTexture.Instance != null)
+				{
+					switch (CameraTexture.Instance.GetStatus())
+					{
+						case CameraTexture.Status.Outside:
+							if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+							{
+								// 写真撮影開始 
+								CameraTexture.Instance.ActionEnter();
+								m_isTakingPictures = true;
+							}
+							break;
+						case CameraTexture.Status.Hold:
+							if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+							{
+								// シャッター 
+								CameraTexture.Instance.ActionShutter();
+							}
+							else if (!(Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+							{
+								// 撮影辞める 
+								CameraTexture.Instance.ActionLeave();
+							}
+							break;
+						case CameraTexture.Status.Leave:
+							m_isTakingPictures = false;
+							break;
+					}
+				}
+			}
+			else
+			{
+				if (CameraTexture.Instance.GetStatus() == CameraTexture.Status.Hold)
+				{
+					// 撮影辞める 
+					CameraTexture.Instance.ActionLeave();
+				}
+			}
+		}
+
+
+		private void FixedUpdate()
         {
             // プレイ中
             if (GameManager.Instance.IsPlay)
@@ -37,8 +86,13 @@ namespace SGJ
                 // カメラの方向から、X-Z平面の単位ベクトルを取得
                 Vector3 cameraForward = Vector3.Scale(m_camera.transform.forward, new Vector3(1, 0, 1)).normalized;
 
-                // 方向キーの入力値とカメラの向きから、移動方向を決定
-                Vector3 moveForward = cameraForward * m_joystick.Vertical + m_camera.transform.right * m_joystick.Horizontal;
+				// 方向キーの入力値とカメラの向きから、移動方向を決定
+				Vector3 moveForward = Vector3.zero;
+				if (!m_isTakingPictures)
+				{
+					moveForward = cameraForward * m_joystick.Vertical + m_camera.transform.right * m_joystick.Horizontal;
+				}
+	
 
                 if (m_isAutoRun)
                 {
@@ -53,8 +107,10 @@ namespace SGJ
                 }
                 else
                 {
-                    // 物理挙動Off
-                    m_rigidbody.velocity = Vector3.zero;
+					// 物理挙動Off
+					Vector3 velo = m_rigidbody.velocity;
+					velo.x = velo.z = 0.0f;
+                    m_rigidbody.velocity = velo;
                 }
                 m_animator.SetFloat("Speed", moveForward.magnitude);
             }
