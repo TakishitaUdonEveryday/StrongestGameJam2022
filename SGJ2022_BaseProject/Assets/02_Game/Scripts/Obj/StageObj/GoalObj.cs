@@ -9,7 +9,14 @@ namespace SGJ
         {
             if (other.CompareTag("Player"))
             {
-                GameManager.Instance.GameClear();
+                if (PointManager.Instance.KusaiPoint < PointManager.Instance.GameOverPoint)
+                {
+                    GameManager.Instance.GameClear();
+                }
+                else
+                {
+                    GameManager.Instance.GameOver();
+                }
             }
         }
     }

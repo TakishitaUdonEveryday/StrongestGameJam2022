@@ -74,6 +74,13 @@ namespace SGJ
                         m_animator.SetBool("isClear", true);
                         m_isEnd = true;
                     }
+                    // ゲームオーバー？
+                    if (GameManager.Instance.IsGameOver)
+                    {
+                        // アニメーションセット
+                        m_animator.SetBool("isGameOver", true);
+                        m_isEnd = true;
+                    }
                 }
             }
         }

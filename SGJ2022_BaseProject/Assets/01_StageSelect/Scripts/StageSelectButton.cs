@@ -14,7 +14,7 @@ namespace SGJ
 
         public void Set(int num)
         {
-            m_text.text = "Stage " + (num + 1).ToString();
+            m_text.text = "Level " + (num + 1).ToString();
             m_num = num;
         }
 

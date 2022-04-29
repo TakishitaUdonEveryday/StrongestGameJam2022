@@ -56,8 +56,8 @@ namespace SGJ
                 return;
             GameDebug.Log("ゲームオーバー");
             m_isGameOver = true;
+            ClearStaging.Instance.SetActive(true);
         }
-
     }
 }
 
