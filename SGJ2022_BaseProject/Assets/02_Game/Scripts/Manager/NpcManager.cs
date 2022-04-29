@@ -21,9 +21,18 @@ namespace SGJ
 
         private List<GameObject> m_peoples = new List<GameObject>();
 
+        private Transform m_player = null;
+
+        public Transform Player { get => m_player; }
+
         private void Start()
         {
             Create();
+        }
+
+        public void SetPlayer(Transform pl)
+        {
+            m_player = pl;
         }
 
         private void Create()
@@ -69,6 +78,11 @@ namespace SGJ
         public void RemovePeople(GameObject obj)
         {
             m_peoples.Remove(obj);
+        }
+
+        public float GetPLDistance(Transform trans)
+        {
+            return Mathf.Abs(Vector3.Distance(trans.position, m_player.transform.position));
         }
     }
 }

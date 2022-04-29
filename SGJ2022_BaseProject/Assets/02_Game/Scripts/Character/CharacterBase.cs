@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // オブジェクトの種類の種類
+[System.Serializable]
 public enum ObjectType
 {
     None,
@@ -28,6 +29,7 @@ public class CharacterBase : MonoBehaviour
     /// <summary>
     /// オブジェクトの種類(コリジョン生成用)
     /// </summary>
+    [SerializeField]
     protected ObjectType m_ObjectType = ObjectType.None;
 
 
@@ -36,7 +38,7 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     public virtual void HitAttackCollision()
     {
-
+        --m_Hp;
     }
 
     

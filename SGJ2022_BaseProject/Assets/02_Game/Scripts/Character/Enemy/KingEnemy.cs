@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.AI;
 
 namespace SGJ
 {
-    public class KingEnemy : MonoBehaviour
+    public class KingEnemy : Enemy
     {
-        private NpcManager m_npcManager = null;
-
         [SerializeField]
         private float m_coolTime = 5f;
 
@@ -21,34 +20,58 @@ namespace SGJ
 
         private float m_time = 0;
 
-
-        private void Start()
+        override protected void Start()
         {
             m_npcManager = NpcManager.Instance;
+            // 一番近い一般人を感染させる
+            Infected();
+            m_navMesh = GetComponent<NavMeshAgent>();
         }
 
-        private void Update()
+        override protected void Update()
         {
-            if(m_time / m_coolTime < 1f)
+            if (!GameManager.Instance.IsPlay)
+                return;
+            if (NpcManager.Instance.GetPLDistance(transform) < m_attackLength)
+            {
+                // 攻撃する
+                m_animator.SetTrigger("Attack");
+            }
+            else
+            {
+                // プレイヤーを追いかける
+                m_navMesh.SetDestination(m_npcManager.Player.position);
+            }
+            m_animator.SetFloat("Speed", m_navMesh.velocity.magnitude / m_navMesh.speed);
+
+            if (m_time / m_coolTime < 1f)
             {
                 m_time += Time.deltaTime;
             }
             else
             {
                 // 一番近い一般人を感染させる
-                for(int i = 0; i < m_infected; ++i)
-                {
-                    var npc = m_npcManager.GetNearPeople(transform, m_rad);
-                    if (npc)
-                    {
-                        m_npcManager.RemovePeople(npc);
-                        var zom = Instantiate(m_zombiePrefab);
-                        zom.transform.position = npc.transform.position;
-                        zom.transform.rotation = npc.transform.rotation;
-                        Destroy(npc);
-                    }
-                }
+                Infected();
                 m_time = 0f;
+            }
+        }
+
+        /// <summary>
+        /// 一番近い一般人を感染させる
+        /// </summary>
+        private void Infected()
+        {
+            for (int i = 0; i < m_infected; ++i)
+            {
+                var npc = m_npcManager.GetNearPeople(transform, m_rad);
+                if (npc)
+                {
+                    m_npcManager.RemovePeople(npc);
+                    var zom = Instantiate(m_zombiePrefab);
+                    zom.transform.position = npc.transform.position;
+                    zom.transform.rotation = npc.transform.rotation;
+                    Destroy(npc);
+                }
             }
         }
     }
