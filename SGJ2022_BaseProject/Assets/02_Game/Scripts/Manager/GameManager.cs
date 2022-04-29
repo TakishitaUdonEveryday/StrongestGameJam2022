@@ -20,6 +20,16 @@ namespace SGJ
 		[SerializeField] private ResultPhotoAlbumUI m_resultPhotoAlbum = null;
 		[SerializeField] private PlayerController m_playerCont = null;
 
+		public const int DEFAULT_PHOTO_SCORE = 100;
+
+		public class EnemyInfo
+		{
+			public EnemyController m_enemy = null;
+			public int m_point = DEFAULT_PHOTO_SCORE;
+		};
+		public List<EnemyInfo> m_enemyInfoList = new List<EnemyInfo>();
+
+
 		/// <summary>
 		/// ÉQÅ[ÉÄÉvÉåÉCíÜÉtÉâÉO
 		/// </summary>
@@ -125,6 +135,66 @@ namespace SGJ
 		public void SetNewTextureToPlayingAlbum(Texture newTexture)
 		{
 			m_playingAlbum.SetNewPhotoTexture(newTexture);
+		}
+
+
+
+		/// <summary>
+		/// ìGÇìoò^ 
+		/// </summary>
+		/// <param name="enemy"></param>
+		public void RegistZombie(EnemyController enemy)
+		{
+			m_enemyInfoList.Add(new EnemyInfo
+			{
+				m_enemy = enemy
+			});
+		}
+
+
+
+		/// <summary>
+		/// éBâeÇ…ÇÊÇÈÉXÉRÉAåvéZ 
+		/// </summary>
+		/// <param name="photoCamera"></param>
+		/// <returns></returns>
+		public int	CalcurateScoreByShooting(Camera photoCamera, out int newCount)
+		{
+			const float MAX_PHOTO_DISTANCE = 100.0f;
+			const float MAX_PHOTO_DISTANCE_SQ = MAX_PHOTO_DISTANCE * MAX_PHOTO_DISTANCE;
+
+			int score = 0;
+			newCount = 0;
+
+			Transform cameraTr = photoCamera.transform;
+
+			foreach (var enemy in m_enemyInfoList)
+			{
+				// ãóó£îªíË 
+				Vector3 dir = enemy.m_enemy.transform.position - cameraTr.position;
+				if (MAX_PHOTO_DISTANCE_SQ < dir.sqrMagnitude) continue;
+
+				// Ç¥Ç¡Ç≠ÇËëOï˚îªíË 
+				if (Vector3.Dot(dir, cameraTr.forward) < 0.0f)
+				{
+					continue;
+				}
+
+				// è⁄ç◊îªíË 
+				float viewRate = enemy.m_enemy.CalcViewRate(photoCamera);
+				if ( 0.0f < viewRate)
+				{
+					if (DEFAULT_PHOTO_SCORE <= enemy.m_point)
+					{
+						newCount++;
+					}
+					int thisScore = (int)Mathf.Min((float)(DEFAULT_PHOTO_SCORE + 2) * viewRate, enemy.m_point);
+					enemy.m_point -= thisScore;
+					score += thisScore;
+				}
+			}
+
+			return score;
 		}
 
 

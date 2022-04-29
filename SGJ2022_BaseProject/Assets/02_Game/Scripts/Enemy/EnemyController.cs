@@ -12,6 +12,7 @@ namespace SGJ
         [SerializeField, Label("視野距離")] private float m_viewLength = 5.0f;
         [SerializeField, Label("移動速度")] private float m_moveSpeed = 1.2f;
 
+		[SerializeField] private List<Transform> m_targetsList = new List<Transform>();
 
         private PlayerController m_foundPlayer = null;
 
@@ -24,6 +25,9 @@ namespace SGJ
             m_rigidbody = GetComponent<Rigidbody>();
 
             StartCoroutine(CoObservePlayer());
+
+			// 登録 
+			GameManager.Instance.RegistZombie(this);
         }
 
         // Update is called once per frame
@@ -120,7 +124,49 @@ namespace SGJ
 
         }
 
-    }
+
+		/// <summary>
+		/// ターゲットがカメラから見えているか判定する 
+		/// </summary>
+		/// <param name="camera"></param>
+		/// <returns></returns>
+		public float CalcViewRate(Camera camera)
+		{
+			int inViewCount = 0;
+			Vector3 cameraPos = camera.transform.position;
+			foreach (var target in m_targetsList)
+			{
+				Vector3		viewp = camera.WorldToViewportPoint(target.position);
+				if ( 0.0f < viewp.z && 0.0f < viewp.x && viewp.x < 1.0f && 0.0f < viewp.y && viewp.y < 1.0f )
+				{
+					// 障害物判定 
+					RaycastHit hitResult = new RaycastHit();
+					if (Physics.Raycast(new Ray(cameraPos, target.position - cameraPos),
+						out hitResult, 100.0f, ~(1 << CommonDefines.LAYER_PLAYER)))
+					{
+						var hitEnemy = hitResult.transform.GetComponentInParent<EnemyController>();
+						if ( hitEnemy == this )
+						{
+							inViewCount++;
+						}
+					}
+				}
+			}
+			if ( inViewCount <= 0 )
+			{
+				return 0.0f;
+			}
+			else
+			{
+				// カメラと正対しているほど高得点 
+				float dot = Vector3.Dot(camera.transform.forward, transform.forward);
+
+				return (float)inViewCount / (float)m_targetsList.Count * Mathf.Lerp(0.5f, 1.0f, dot * (-0.5f) + 0.5f);
+			}
+		}
+
+
+	}
 
 }
 

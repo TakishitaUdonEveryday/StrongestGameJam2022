@@ -25,6 +25,7 @@ namespace SGJ
         private Rigidbody m_rigidbody = null;
         private Camera m_camera = null;
 
+
         private bool m_isEnd = false;
 
 		private bool m_isTakingPictures = false;
@@ -101,9 +102,9 @@ namespace SGJ
 									photoData.m_texture = new Texture2D(m_photoRenderTexture.width, m_photoRenderTexture.height, TextureFormat.RGBA32, false);
 									Graphics.CopyTexture(m_photoRenderTexture, photoData.m_texture);
 
-									// 評価点 
-									photoData.m_score = Random.Range(1, 100);
-									photoData.m_newCount = Mathf.Max(0,Random.Range(0, 3) - 1);
+									// 得点計算 
+									photoData.m_score = GameManager.Instance.CalcurateScoreByShooting(
+										m_cameraMachineTr.GetComponent<Camera>(), out photoData.m_newCount);
 
 									// リストアップ 
 									m_photoDataList.Add(photoData);
