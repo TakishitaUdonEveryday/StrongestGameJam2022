@@ -103,7 +103,7 @@ public class AttackCollisionBase : MonoBehaviour
     /// “–‚½‚è”»’è
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collision collision)
     {
         if (!m_isInit)
         {
