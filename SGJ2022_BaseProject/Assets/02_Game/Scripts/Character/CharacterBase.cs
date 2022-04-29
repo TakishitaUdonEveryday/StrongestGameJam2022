@@ -38,7 +38,12 @@ public class CharacterBase : MonoBehaviour
     /// </summary>
     public virtual void HitAttackCollision()
     {
+        GameDebug.Log(m_ObjectType + "Ç…ìñÇΩÇ¡ÇΩÅI");
         --m_Hp;
+        if(m_Hp <= 0)
+        {
+            GameDebug.Log(gameObject.name + "Ç™éÄÇÒÇæ");
+        }
     }
 
     

@@ -64,6 +64,4 @@ SGJ2022_BaseProject/obj
 SGJ2022_BaseProject/UserSettings
 SGJ2022_BaseProject/Logs
 SGJ2022_BaseProject/Temp
-*.log
-SGJ2022_BaseProject/Logs/*.log
 SGJ2022_BaseProject/Logs

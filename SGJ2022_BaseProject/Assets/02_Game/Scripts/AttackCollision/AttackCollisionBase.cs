@@ -7,12 +7,13 @@ public class AttackCollisionBase : MonoBehaviour
     private static readonly float DEF_ACTIVE_TIME = 5.0f;
 
     [SerializeField]
-    [Tooltip("コリジョン生存時間")]
+    [Label("コリジョン生存時間")]
     protected float m_collisionActiveTime = DEF_ACTIVE_TIME;
 
     /// <summary>
     /// 生成親の種類
     /// </summary>
+    [SerializeField]
     protected ObjectType m_createType = ObjectType.None;
 
     /// <summary>
@@ -33,28 +34,29 @@ public class AttackCollisionBase : MonoBehaviour
     protected virtual void Awake()
     {
         // 生成した瞬間はコリジョンを無効にしておく
-        this.gameObject.SetActive(false);
+        //this.gameObject.SetActive(false);
+        StartCollisionData();
     }
 
     /// <summary>
     /// コリジョン初期化～開始処理
     /// 時間指定 0以下の場合は永続的にコリジョンを出すようにする
     /// </summary>
-    public void StartCollisionData(ObjectType type, Transform parentTrans, bool isParent, float time = 5.0f)
+    public void StartCollisionData(/*ObjectType type, Transform parentTrans, bool isParent, float time = 5.0f*/)
     {
-        this.gameObject.SetActive(true);
+        //this.gameObject.SetActive(true);
 
-        if (isParent)
-        {
-            this.gameObject.transform.parent = parentTrans;
-            this.gameObject.transform.localPosition = Vector3.zero;
-        }
-        else
-        {
-            this.gameObject.transform.position = parentTrans.position;
-        }
-        // 生存時間上書き
-        m_collisionActiveTime = time;
+        //if (isParent)
+        //{
+        //    this.gameObject.transform.parent = parentTrans;
+        //    this.gameObject.transform.localPosition = Vector3.zero;
+        //}
+        //else
+        //{
+        //    this.gameObject.transform.position = parentTrans.position;
+        //}
+        //// 生存時間上書き
+        //m_collisionActiveTime = time;
 
         m_timeCnt = 0.0f;
         m_isInit = true;

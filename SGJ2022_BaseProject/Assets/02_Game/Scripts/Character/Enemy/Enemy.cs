@@ -15,6 +15,12 @@ namespace SGJ
         [SerializeField]
         protected float m_attackLength = 1f;
 
+        [SerializeField]
+        protected GameObject m_attackPrefab = null;
+
+        [SerializeField]
+        protected Transform m_attackPos = null;
+
         virtual protected void Start()
         {
             m_npcManager = NpcManager.Instance;
@@ -35,6 +41,12 @@ namespace SGJ
                 m_animator.SetTrigger("Attack");
             }
             m_animator.SetFloat("Speed", m_navMesh.velocity.magnitude / m_navMesh.speed);
+        }
+
+        public void PopAttackCollision()
+        {
+            GameDebug.Log("アタック");
+            var obj = Instantiate(m_attackPrefab, m_attackPos);
         }
     }
 }
