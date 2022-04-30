@@ -11,11 +11,12 @@ namespace SGJ
 
         private void Start()
         {
-            var max = GameDataManager.Instance.GameData.MaxStage;
+            var gameData = GameDataManager.Instance.GameData;
+            int max = gameData.MaxStage;
             for (int i = 0; i < max; ++i)
             {
                 var obj = Instantiate(m_prefab, transform);
-                obj.GetComponent<StageSelectButton>().Set(i);
+                obj.GetComponent<StageSelectButton>().Set(gameData.GetStageName(i), i);
             }
         }
     }

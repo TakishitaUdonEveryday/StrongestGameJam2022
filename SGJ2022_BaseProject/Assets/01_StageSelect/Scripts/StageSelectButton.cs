@@ -12,11 +12,13 @@ namespace SGJ
 
         private int m_num = 0;
 
-        public void Set(int num)
+        public void Set(string levelName, int num)
         {
-            m_text.text = "Stage " + (num + 1).ToString();
+            m_text.text = levelName;
             m_num = num;
         }
+
+
 
         public void OnClick()
         {
