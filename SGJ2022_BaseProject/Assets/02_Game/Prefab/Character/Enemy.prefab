@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9a937dd34a4454596ced6bd14482ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Hp: 5
+  m_Hp: 2
   m_ObjectType: 2
   m_animator: {fileID: 5551545768021423593}
   m_attackLength: 1.8

@@ -20,6 +20,7 @@ namespace SGJ
         private float m_rad = 20f;
 
         private List<GameObject> m_peoples = new List<GameObject>();
+        private List<GameObject> m_enemys = new List<GameObject>();
 
         private Transform m_player = null;
 
@@ -92,9 +93,30 @@ namespace SGJ
             m_peoples.Remove(obj);
         }
 
+        public void AddEnemy(GameObject obj)
+        {
+            m_enemys.Add(obj);
+        }
+
         public float GetPLDistance(Transform trans)
         {
             return Mathf.Abs(Vector3.Distance(trans.position, m_player.transform.position));
+        }
+
+        public void Clear()
+        {
+            foreach(var ene in m_enemys)
+            {
+                if (ene && !ene.GetComponent<Enemy>().IsDeath)
+                {
+                    var obj = Instantiate(m_peopleObj, transform);
+                    obj.transform.position = ene.transform.position;
+                    obj.transform.rotation = ene.transform.rotation;
+                    m_peoples.Add(obj);
+                    Destroy(ene);
+                }
+            }
+            m_enemys.Clear();
         }
     }
 }

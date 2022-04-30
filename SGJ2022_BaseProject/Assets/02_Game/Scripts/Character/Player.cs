@@ -24,14 +24,29 @@ namespace SGJ
         [Label("銃"), SerializeField]
         private bool m_isGun = false;
 
+        [Label("銃モデル"), SerializeField]
+        private GameObject m_gunModel = null;
+        [Label("剣モデル"), SerializeField]
+        private GameObject m_sordModel = null;
+
         private void Start()
         {
             NpcManager.Instance.SetPlayer(transform);
+            if (m_isGun)
+            {
+                m_gunModel.SetActive(true);
+                m_sordModel.SetActive(false);
+            }
+            else
+            {
+                m_gunModel.SetActive(false);
+                m_sordModel.SetActive(true);
+            }
         }
 
         private void Update()
         {
-            if (m_isDeath)
+            if (!GameManager.Instance.IsPlay || m_isDeath)
                 return;
             if (Input.GetKeyDown(KeyCode.Space))
             {

@@ -26,6 +26,8 @@ public class CharacterBase : MonoBehaviour
         set { m_Hp = value; }
     }
 
+    public bool IsDeath { get => m_isDeath; }
+
     protected bool m_isDeath = false;
 
     /// <summary>

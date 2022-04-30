@@ -184,6 +184,8 @@ MonoBehaviour:
   m_attackPos: {fileID: 1023382575645083622}
   m_muzzle: {fileID: 1023382575645083622}
   m_isGun: 1
+  m_gunModel: {fileID: 2847554122275192793}
+  m_sordModel: {fileID: 2621478635962775953}
 --- !u!95 &8274445479284058849
 Animator:
   serializedVersion: 3
@@ -374,3 +376,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a3fc1c0ddbff8c4fa2281cc7bd77a83, type: 3}
+--- !u!1 &2847554122275192793 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a3fc1c0ddbff8c4fa2281cc7bd77a83, type: 3}
+  m_PrefabInstance: {fileID: 3118147574459286152}
+  m_PrefabAsset: {fileID: 0}
