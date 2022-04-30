@@ -77,6 +77,7 @@ namespace SGJ
                     // ゲームオーバー？
                     if (GameManager.Instance.IsGameOver)
                     {
+                        m_animator.SetFloat("Speed", 0);
                         // アニメーションセット
                         m_animator.SetBool("isGameOver", true);
                         m_isEnd = true;

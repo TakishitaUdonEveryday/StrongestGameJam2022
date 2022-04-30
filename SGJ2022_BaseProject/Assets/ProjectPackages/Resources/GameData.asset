@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GameData
   m_EditorClassIdentifier: 
   m_stageNum: 1
-  m_maxStage: 2
+  m_maxStage: 3
