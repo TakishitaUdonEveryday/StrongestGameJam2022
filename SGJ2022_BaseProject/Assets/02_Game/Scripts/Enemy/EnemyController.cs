@@ -88,6 +88,7 @@ namespace SGJ
 			Vector3 eyeLocalPos = Vector3.up * EYE_HEIGHT;
 		//	Debug.Log("pos = " + transform.position);
 			Vector3 eyeWorldPos = transform.TransformPoint(eyeLocalPos);
+			eyeWorldPos.y = EYE_HEIGHT;		// 高身長でもプレイヤーを見つけるパッチ
 			GameObject foundObj = null;
 			int layerMask = ~(1 << CommonDefines.LAYER_ZOMBIE);
 
