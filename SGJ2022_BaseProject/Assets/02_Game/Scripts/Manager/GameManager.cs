@@ -34,10 +34,10 @@ namespace SGJ
             if (m_isStart)
                 return;
             GameDebug.Log("ゲームスタート");
-            if(GoalObj.Instance == null)
-            {
-                GameDebug.LogError("ゴールがありません");
-            }
+            //if(GoalObj.Instance == null)
+            //{
+            //    GameDebug.LogError("ゴールがありません");
+            //}
             m_isStart = true;
         }
 
