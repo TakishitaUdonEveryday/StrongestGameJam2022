@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 491153152847482709}
   - component: {fileID: 8026710542586015949}
-  - component: {fileID: 8214859608318325514}
-  - component: {fileID: 8917771986123071331}
+  - component: {fileID: 1512640621782140743}
+  - component: {fileID: 1231111723346312318}
   m_Layer: 0
   m_Name: People
   m_TagString: Untagged
@@ -48,7 +48,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 1, z: -0.00000008940697}
---- !u!114 &8214859608318325514
+--- !u!114 &1512640621782140743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,13 +57,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 192687670723235293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe102a4fae0a3554b9e220a399fbd5e8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ba8368218e6b624d90b3df47b77a71d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Hp: 10
   m_ObjectType: 1
   m_animator: {fileID: 7369707341945356769}
---- !u!195 &8917771986123071331
+--- !u!195 &1231111723346312318
 NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

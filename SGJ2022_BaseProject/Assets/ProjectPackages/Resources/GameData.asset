@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed6b89a422b89e44b841564cbfafec5, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  m_stageNum: 1
-  m_maxStage: 2
+  m_stageNum: 0
+  m_maxStage: 1

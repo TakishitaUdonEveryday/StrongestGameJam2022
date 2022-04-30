@@ -98,25 +98,20 @@ namespace SGJ
             m_enemys.Add(obj);
         }
 
+        public void Clear()
+        {
+            foreach(var obj in m_enemys)
+            {
+                var npc = Instantiate(m_peopleObj, transform);
+                npc.transform.rotation = obj.transform.rotation;
+                npc.transform.position = obj.transform.position;
+                obj.SetActive(false);
+            }
+        }
+
         public float GetPLDistance(Transform trans)
         {
             return Mathf.Abs(Vector3.Distance(trans.position, m_player.transform.position));
-        }
-
-        public void Clear()
-        {
-            foreach(var ene in m_enemys)
-            {
-                if (ene && !ene.GetComponent<Enemy>().IsDeath)
-                {
-                    var obj = Instantiate(m_peopleObj, transform);
-                    obj.transform.position = ene.transform.position;
-                    obj.transform.rotation = ene.transform.rotation;
-                    m_peoples.Add(obj);
-                    Destroy(ene);
-                }
-            }
-            m_enemys.Clear();
         }
     }
 }

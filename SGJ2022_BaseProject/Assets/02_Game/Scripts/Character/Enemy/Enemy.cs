@@ -26,7 +26,6 @@ namespace SGJ
         virtual protected void Start()
         {
             m_npcManager = NpcManager.Instance;
-            transform.Rotate(Vector3.up * Random.Range(-180, 180));
             m_navMesh = GetComponent<NavMeshAgent>();
             m_rigidbody = GetComponent<Rigidbody>();
             m_navMesh.stoppingDistance = m_attackLength;

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SceneData
   m_EditorClassIdentifier: 
   m_titleScene: Title
-  m_selectScene: StageSelect
+  m_selectScene: Game
   m_mainScene: Game

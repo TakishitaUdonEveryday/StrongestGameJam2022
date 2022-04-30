@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01_StageSelect/Scene/StageSelect.unity
     guid: f2496d99fd3e8ed47960b0d220895b57
+  - enabled: 1
+    path: Assets/02_Game/Scene/Stage/Stage_mura.unity
+    guid: ffef6aa4d973dbe4086266227dd45243
   m_configObjects: {}

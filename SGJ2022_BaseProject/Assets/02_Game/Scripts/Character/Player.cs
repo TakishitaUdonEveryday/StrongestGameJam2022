@@ -24,30 +24,50 @@ namespace SGJ
         [Label("銃"), SerializeField]
         private bool m_isGun = false;
 
-        [Label("銃モデル"), SerializeField]
-        private GameObject m_gunModel = null;
-        [Label("剣モデル"), SerializeField]
-        private GameObject m_sordModel = null;
+        [Label("武器セット"), SerializeField]
+        private GameObject[] m_weapons; 
 
         private void Start()
         {
             NpcManager.Instance.SetPlayer(transform);
+            SetType(m_isGun);
+        }
+
+        private void SetType(bool isGun)
+        {
+            m_isGun = isGun;
             if (m_isGun)
             {
-                m_gunModel.SetActive(true);
-                m_sordModel.SetActive(false);
+                m_weapons[0].SetActive(true);
+                m_weapons[1].SetActive(false);
+                m_weapons[2].SetActive(false);
             }
             else
             {
-                m_gunModel.SetActive(false);
-                m_sordModel.SetActive(true);
+                m_weapons[0].SetActive(false);
+                m_weapons[1].SetActive(true);
+                m_weapons[2].SetActive(true);
             }
         }
 
         private void Update()
         {
-            if (!GameManager.Instance.IsPlay || m_isDeath)
+            if (!GameManager.Instance.IsPlay && m_isDeath)
                 return;
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                // 剣
+                SetType(false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                // 銃
+                SetType(true);
+            }
+
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (m_isGun)

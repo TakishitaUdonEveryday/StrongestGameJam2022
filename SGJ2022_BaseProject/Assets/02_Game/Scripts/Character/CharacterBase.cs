@@ -26,8 +26,6 @@ public class CharacterBase : MonoBehaviour
         set { m_Hp = value; }
     }
 
-    public bool IsDeath { get => m_isDeath; }
-
     protected bool m_isDeath = false;
 
     /// <summary>
@@ -40,13 +38,13 @@ public class CharacterBase : MonoBehaviour
     /// <summary>
     /// 攻撃用コリジョンが当たった場合に呼び出される
     /// </summary>
-    public virtual void HitAttackCollision(GameObject other)
+    public virtual void HitAttackCollision(GameObject other,int damage)
     {
         if (m_Hp <= 0)
             return;
 
         GameDebug.Log(m_ObjectType + "に当たった！");
-        --m_Hp;
+        m_Hp -= damage;
         if(m_Hp <= 0)
         {
             Death();

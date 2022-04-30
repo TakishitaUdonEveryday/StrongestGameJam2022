@@ -31,6 +31,9 @@ public class AttackCollisionBase : MonoBehaviour
     /// </summary>
     private Coroutine m_timeCntCo = null;
 
+    [SerializeField]
+    private int m_damage = 1;
+
     protected virtual void Awake()
     {
         // 生成した瞬間はコリジョンを無効にしておく
@@ -118,8 +121,11 @@ public class AttackCollisionBase : MonoBehaviour
         // 当たったオブジェクトの種類が親の種類と違う場合にヒット処理を行う
         if (hitObj)
         {
-            // 当たったときの実装呼び出し(実装は各自で行う)
-            hitObj.HitAttackCollision(gameObject);
+            if (gameObject)
+            {
+                // 当たったときの実装呼び出し(実装は各自で行う)
+                hitObj.HitAttackCollision(gameObject, m_damage);
+            }
 
             // 多段ヒットさせないためにオブジェクト削除
             Destroy(this.gameObject);
