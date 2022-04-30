@@ -24,7 +24,8 @@ namespace SGJ
             {
                 GameDebug.LogWarning("登録ステージが多すぎます");
             }
-            SceneManager.LoadScene(m_list[data.StageNum % m_list.Length], LoadSceneMode.Additive);
+            SceneManager.LoadScene(data.GetSceneName(), LoadSceneMode.Additive);
+        //    SceneManager.LoadScene(m_list[data.StageNum % m_list.Length], LoadSceneMode.Additive);
         }
     }
 }

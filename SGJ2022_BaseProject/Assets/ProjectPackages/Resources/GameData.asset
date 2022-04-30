@@ -14,3 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_stageNum: 1
   m_maxStage: 2
+  m_stageName:
+  - "\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB"
+  - "\u7B2C3\u6771\u4EAC"
+  - "\u5EC3\u8ECA\u7F6E\u304D\u5834"
+  - "\u753A"
+  - "\u30B9\u30C6\u30FC\u30B8\uFF11"
+  m_sceneName:
+  - Stage_Test
+  - Stage_09
+  - Stage_03
+  - Stage_07
+  - Stage_08
