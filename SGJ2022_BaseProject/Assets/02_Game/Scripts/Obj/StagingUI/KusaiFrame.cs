@@ -30,7 +30,7 @@ namespace SGJ
             else if (PointManager.Instance.KusaiLevel1 <= PointManager.Instance.KusaiPoint)
             {
                 m_image.sprite = m_kusaiTextures[0];
-                m_image.color = Color.white;
+                m_image.color = new Color32(255, 255, 255, 255);
             }
         }
     }
