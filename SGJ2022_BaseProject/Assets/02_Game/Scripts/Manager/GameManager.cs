@@ -31,6 +31,17 @@ namespace SGJ
 
 
 		/// <summary>
+		/// プレイヤーを取得 
+		/// </summary>
+		/// <returns></returns>
+		public PlayerController	GetPlayer()
+		{
+			return m_playerCont;
+		}
+
+
+
+		/// <summary>
 		/// ゲームプレイ中フラグ
 		/// </summary>
 		public bool IsPlay

@@ -15,25 +15,45 @@ namespace SGJ
 		[SerializeField] private List<Transform> m_targetsList = new List<Transform>();
 
         private PlayerController m_foundPlayer = null;
+		private Vector3 m_targetPosition = Vector3.zero;
 
         private Rigidbody m_rigidbody = null;
+
+		private Transform m_bodyTr = null;
+		private Quaternion m_startRot = Quaternion.identity;
+
+		private float m_swingAngle = 0;
 
 
         // Start is called before the first frame update
         void Start()
         {
             m_rigidbody = GetComponent<Rigidbody>();
+			m_bodyTr = transform.GetChild(0);
+			m_startRot = m_bodyTr.localRotation;
 
-            StartCoroutine(CoObservePlayer());
+			StartCoroutine(CoObservePlayer());
 
 			// 登録 
 			GameManager.Instance.RegistZombie(this);
         }
 
+		const float FOUND_SWING_ANGLE = (Mathf.PI * 2.0f * 2.5f);
+		const float NOT_FOUND_SWING_ANGLE = (Mathf.PI * 2.0f);
+
         // Update is called once per frame
         void Update()
         {
-        }
+			if (m_foundPlayer !=null)
+			{
+				m_swingAngle += FOUND_SWING_ANGLE * Time.deltaTime;
+			} else
+			{
+				m_swingAngle += NOT_FOUND_SWING_ANGLE * Time.deltaTime;
+			}
+
+			m_bodyTr.localRotation = Quaternion.AngleAxis(2.0f * Mathf.Sin(m_swingAngle), Vector3.forward) * m_startRot;
+		}
 
 
 		private void FixedUpdate()
@@ -44,7 +64,8 @@ namespace SGJ
 				if (GameManager.Instance.IsPlay)
 				{
 					// 体の向きをプレイヤー方向にする
-					Vector3 dir = m_foundPlayer.transform.position - transform.position;
+				//	Vector3 dir = m_foundPlayer.transform.position - transform.position;
+					Vector3 dir = m_targetPosition - transform.position;
 					dir.y = 0.0f;
 					Quaternion lookRot = Quaternion.LookRotation(dir);
 					transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, 0.25f);
@@ -82,7 +103,7 @@ namespace SGJ
         /// </summary>
         private void ObservePlayer()
 		{
-            const int VIEW_DIV_NUM = 20;
+        //    const int VIEW_DIV_NUM = 20;
             const float EYE_HEIGHT = 1.0f;
 
 			Vector3 eyeLocalPos = Vector3.up * EYE_HEIGHT;
@@ -92,6 +113,35 @@ namespace SGJ
 			GameObject foundObj = null;
 			int layerMask = ~(1 << CommonDefines.LAYER_ZOMBIE);
 
+			// プレイヤー中央 
+			var playerCont = GameManager.Instance.GetPlayer();
+			Vector3 playerCenter = playerCont.transform.position + Vector3.up;
+
+			// プレイヤー方向 
+			Vector3 toPlayer = playerCenter - eyeWorldPos;
+			Vector3 toPlayerXZ = new Vector3(toPlayer.x, toPlayer.y*0.1f, toPlayer.z);
+
+			// 視野内か？ 
+			float dot = Vector3.Dot(transform.forward, toPlayerXZ.normalized);
+			if (Mathf.Cos(m_viewAngleRange*Mathf.PI/180.0f) < dot)
+			{
+				// 視線は通るか？ 
+				RaycastHit hit = new RaycastHit();
+				if (Physics.Raycast(new Ray
+				{
+					origin = eyeWorldPos,
+					direction = toPlayerXZ
+				}, out hit, m_viewLength, layerMask))
+				{
+					if (hit.collider.gameObject.layer == CommonDefines.LAYER_PLAYER)
+					{
+						foundObj = hit.collider.gameObject;
+					}
+				}
+			}
+
+
+			/*	@memo 自分の正面に放射状に視線を飛ばすと、距離が離れると隙間が大きくなってかいくぐれてしまう 
 			for (int i=0; i < VIEW_DIV_NUM; ++i)
 			{
                 RaycastHit hit = new RaycastHit();
@@ -111,13 +161,15 @@ namespace SGJ
                     }
 				}
 			}
+			*/
 
             // 見つけられた？
             if (foundObj!=null)
 			{
                 m_foundPlayer = foundObj.GetComponentInParent<PlayerController>();
-            //    Debug.Log("FOUND");
-            } else
+				m_targetPosition = m_foundPlayer.transform.position;
+				//    Debug.Log("FOUND");
+			} else
 			{
                 m_foundPlayer = null;
             //    Debug.Log("NONE");
