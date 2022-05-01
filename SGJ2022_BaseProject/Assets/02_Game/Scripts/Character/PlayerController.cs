@@ -32,6 +32,7 @@ namespace SGJ
 
 		[SerializeField] private float m_cameraMoveAngleSpd = 90.0f;
 		[SerializeField] private RenderTexture m_photoRenderTexture;
+		[SerializeField] private RenderTexture m_resultRenderTexture;
 
 		private List<PhotoData> m_photoDataList = new List<PhotoData>();
 
@@ -99,8 +100,16 @@ namespace SGJ
 
 									// 写真をコピー 
 									PhotoData photoData = new PhotoData();
-									photoData.m_texture = new Texture2D(m_photoRenderTexture.width, m_photoRenderTexture.height, TextureFormat.RGBA32, false);
-									Graphics.CopyTexture(m_photoRenderTexture, photoData.m_texture);
+									RenderTexture photoTexture = Instantiate(m_resultRenderTexture);
+									photoData.m_texture = photoTexture;
+									Camera photoCamera = m_cameraMachineTr.GetComponent<Camera>();
+									var rt = photoCamera.targetTexture;
+									photoCamera.targetTexture = photoTexture;
+									photoCamera.Render();
+									photoCamera.targetTexture = rt;
+
+								//	photoData.m_texture = new Texture2D(m_photoRenderTexture.width, m_photoRenderTexture.height, TextureFormat.RGBA32, false);
+								//	Graphics.CopyTexture(m_photoRenderTexture, photoData.m_texture);
 
 									// 得点計算 
 									photoData.m_score = GameManager.Instance.CalcurateScoreByShooting(
