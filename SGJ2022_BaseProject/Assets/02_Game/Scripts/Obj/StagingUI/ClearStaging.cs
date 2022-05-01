@@ -12,6 +12,9 @@ namespace SGJ
 
 		[SerializeField] private TextMeshProUGUI m_totalScoreText = null;
 
+		[SerializeField] private TextMeshProUGUI m_textNew = null;
+
+
         private bool m_isTap = false;
 
 		private float m_delayTime = 0.0f;
@@ -37,6 +40,11 @@ namespace SGJ
 		public void SetTotalScore(int score)
 		{
 			m_totalScoreText.text = "Total " + score.ToString();
+		}
+
+		public void SetNew(bool isNew)
+		{
+			m_textNew.enabled = isNew;
 		}
 
 

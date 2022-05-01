@@ -90,6 +90,18 @@ namespace SGJ
 			}
 			m_textClear.SetTotalScore(totalScore);
 
+			// 記録更新 
+			var data = GameDataManager.Instance.GameData;
+			int lastScore = SaveData.GetRecord(data.StageNum);
+			if (lastScore < totalScore)
+			{
+				SaveData.SetRecord(data.StageNum, totalScore);
+				m_textClear.SetNew(true);
+			} else
+			{
+				m_textClear.SetNew(false);
+			}
+
 			// リザルト表示 
 			StartCoroutine(CoDelayResult((float)photoList.Count*0.2f + 0.25f));
 		}
